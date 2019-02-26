@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PlaybackEventAggregation" table="playback_event_aggregation">
+		<id name="playbackEventAggregationId" column="playback_event_aggregation_id">
+			<generator class="sequence">
+                <param name="sequence">playback_event_seq</param>
+            </generator>
+		</id>		
+		<property name="deviceId" column="device_id"/>
+		<property name="deviceName" column="device_name"/>
+		<property name="assetId" column="asset_id"/>
+		<property name="assetName" column="asset_name"/>
+		<property name="airingLength" column="airing_length"/>
+		<property name="displayAiringLength" column="display_airing_length"/>		
+		<property name="startDatetime" column="start_datetime"/>
+		<property name="displaysCount" column="displays_count"/>
+		<property name="displayExceptionsCount" column="display_exceptions_count"/>
+		<property name="clickCount" column="click_count"/>
+		<property name="numAirings" column="num_airings"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,3 @@
+com\jcg\hibernate\crud\operations\Student.class
+com\jcg\hibernate\crud\operations\AppMain.class
+com\jcg\hibernate\crud\operations\DbOperations.class

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.EventHistory" table="event_history">
+		<id name="eventHistoryId" column="event_history_id">
+			<generator class="sequence">
+                <param name="sequence">event_history_seq</param>
+            </generator>
+		</id>	
+		<property name="eventType" column="event_type"/>
+		<property name="deviceId" column="device_id"/>
+		<property name="eventDt" column="event_dt"/>
+		<property name="eventDetails" column="event_details"/>																		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 11, 2013 4:54:57 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="StudentInformation" table="student_information" catalog="tutorials">
+        <id name="studentId" type="java.lang.Integer">
+            <column name="STUDENT_ID" />
+            <generator class="foreign">
+                <param name="property">student</param>
+            </generator>
+        </id>
+        <one-to-one name="student" class="Student" constrained="true"></one-to-one>
+        <property name="address" type="string">
+            <column name="ADDRESS" length="100" not-null="true" />
+        </property>
+        <property name="registryNumber" type="string">
+            <column name="REGISTRY_NUMBER" />
+        </property>
+        <property name="phoneNumber" type="string">
+            <column name="PHONE_NUMBER" />
+        </property>
+        <property name="enlisted" type="date">
+            <column name="ENLISTED" length="10" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

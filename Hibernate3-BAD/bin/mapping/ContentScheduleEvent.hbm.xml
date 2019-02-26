@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentScheduleEvent" table="content_schedule_event">
+		<id name="contentScheduleEventId" column="content_schedule_event_id">
+            <generator class="sequence">
+                <param name="sequence">content_schedule_event_seq</param>
+            </generator>  
+		</id>		
+		<property name="deviceId" column="device_id"/>
+		<property name="deviceName" column="device_name"/>		
+		<property name="segmentId" column="segment_id"/>
+		<property name="segmentName" column="segment_name"/>
+		<property name="playlistId" column="playlist_id"/>
+		<property name="playlistName" column="playlist_name"/>
+		<property name="playlistLength" column="playlist_length"/>		
+		<property name="assetId" column="asset_id"/>
+		<property name="assetName" column="asset_name"/>
+		<property name="assetLength" column="asset_length"/>				
+		<property name="layoutId" column="layout_id"/>
+		<property name="layoutName" column="layout_name"/>		
+		<property name="displayareaId" column="displayarea_id"/>
+		<property name="displayareaName" column="displayarea_name"/>		
+		<property name="startDatetime" column="start_datetime"/>
+		<property name="endDatetime" column="end_datetime"/>
+		<property name="offsetIntoSegment" column="offset_into_segment"/>
+		<property name="offsetIntoPlaylist" column="offset_into_playlist"/>
+		<property name="offsetIntoAsset" column="offset_into_asset"/>
+		<property name="segmentBlockLength" column="segment_block_length"/>
+		<property name="continuationPart" column="continuation_part"/>
+		<property name="origin" column="origin"/>
+		<property name="displaysCount" column="displays_count"/>
+		<property name="displayExceptionsCount" column="display_exceptions_count"/>	
+		<property name="clickUrl" column="click_url"/>
+					
+		<filter name="contentScheduleEventsAssetFilter" condition="(asset_id IN (SELECT DISTINCT(a.asset_id) FROM asset a, permission_entry pe WHERE a.asset_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.asset_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.asset_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="contentScheduleEventsAssetFilterAdmin" condition="(asset_id IN (SELECT DISTINCT(a.asset_id) FROM asset a, permission_entry pe WHERE a.asset_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+		
+		<filter name="contentScheduleEventsDeviceFilter" condition="(device_id IN (SELECT DISTINCT(a.device_id) FROM device a, permission_entry pe WHERE a.device_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.device_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.device_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="contentScheduleEventsDeviceFilterAdmin" condition="(device_id IN (SELECT DISTINCT(a.device_id) FROM device a, permission_entry pe WHERE a.device_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+					
+	</class>
+	
+	<filter-def name="contentScheduleEventsAssetFilter">
+    	<filter-param name="roleIds" type="long" />
+    	<filter-param name="appUserId" type="string" />	     	
+    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	<filter-def name="contentScheduleEventsDeviceFilter">
+    	<filter-param name="roleIds" type="long" />
+    	<filter-param name="appUserId" type="string" />	     	
+    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>		
+	<filter-def name="contentScheduleEventsAssetFilterAdmin">
+    	<filter-param name="roleIds" type="long" /> 	
+    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	<filter-def name="contentScheduleEventsDeviceFilterAdmin">
+    	<filter-param name="roleIds" type="long" />  	
+    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

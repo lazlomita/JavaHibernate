@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AssetIngesterStatus" table="asset_ingester_status">
+		<id name="assetIngesterStatusId" column="asset_ingester_status_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.AssetIngesterStatus</param>
+			</generator>
+		</id>		
+		<property name="dt" column="dt"/>		
+		<property name="status" column="status" />
+		
+		<filter name="assetIngesterStatusFilter" condition="asset_ingester_status_id IN 
+			(SELECT ei.entity_id from entity_instance ei where ei.entity_id = asset_ingester_status_id 
+			AND ei.appuser_id = :appUserId)" />	
+	</class>
+	
+	<filter-def name="assetIngesterStatusFilter">
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	</filter-def>		
+</hibernate-mapping>

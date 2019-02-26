@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ServerEventLog" table="server_event_log">
+		<id name="serverEventLogId" column="server_event_log_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.ServerEventLog</param>
+			</generator>
+		</id>	
+		<property name="username" column="username"/>
+		<property name="action" column="action"/>
+		<property name="startDt" column="start_dt"/>
+		<property name="endDt" column="end_dt"/>
+		<property name="status" column="status"/>
+		<property name="details" column="details"/>																		
+	</class>
+</hibernate-mapping>

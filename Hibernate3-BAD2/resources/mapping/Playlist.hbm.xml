@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Playlist" table="playlist">
+		<id name="playlistId" column="playlist_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Playlist</param>
+			</generator>
+		</id>
+		<property name="playlistName" column="playlist_name"/>	
+		<property name="length" column="length"/>
+		<property name="hql" column="hql"/>
+		<property name="customMethod" column="custom_method"/>
+		<property name="runFromContentScheduler" column="run_from_content_scheduler"/>
+		<property name="presentationStyle" column="presentation_style" type="com.kuvata.kmf.usertype.PresentationStyle" not-null="false" />
+		<property name="maxResults" column="max_results"/>
+		<property name="playlistOrder" column="playlist_order" type="parkmedia.usertype.PlaylistOrderType"/>		
+		<property name="csvImportDate" column="csv_import_date"/>		
+		<property name="csvImportStatus" column="csv_import_status" type="parkmedia.usertype.PlaylistImportStatus"/>		
+		<property name="csvImportDetail" column="csv_import_detail" />								
+		<property name="contentSchedulerHook" column="content_scheduler_hook" type="parkmedia.usertype.ContentSchedulerHookType" />										
+		<property name="contentRotationImportDetail" column="content_rotation_import_detail" />								
+		<property name="transition" column="transition"  />
+		<property name="type" column="type"  />	
+		<property name="useRoles" column="use_roles"/>
+		<property name="numAssets" column="num_assets"/>
+		<property name="dynamicContentDisplay" column="dynamic_content_display" />
+		<property name="lastDynamicUpdateDt" column="last_dynamic_update_dt"/>
+		<many-to-one class="com.kuvata.kmf.Layout" name="dynamicContentLayout" cascade="none" column="dynamic_content_layout_id" />
+		<many-to-one class="com.kuvata.kmf.Displayarea" name="dynamicContentDisplayarea" cascade="none" column="dynamic_content_displayarea_id" />
+		<property name="dynamicContentType" column="dynamic_content_type"/>
+		<property name="avgLoopLength" column="avg_loop_length"/>
+		
+		<set name="playlistDisplayareas" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="playlist_id" />
+			<one-to-many class="com.kuvata.kmf.PlaylistDisplayarea"/>
+		</set>	
+		<set name="playlistContentRotations" inverse="true" lazy="true" cascade="all-delete-orphan" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="playlist_id" />
+			<one-to-many class="com.kuvata.kmf.PlaylistContentRotation"/>
+		</set>					
+		<set name="playlistSegmentParts" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="playlist_id" />
+			<one-to-many class="com.kuvata.kmf.PlaylistSegmentPart"/>
+		</set>							
+		<set name="playlistGrpMembers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="playlist_id" />
+			<one-to-many class="com.kuvata.kmf.PlaylistGrpMember"/>
+		</set>			
+		<set name="playlistImports" inverse="true" lazy="true" cascade="all-delete-orphan" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="playlist_id" />
+			<one-to-many class="com.kuvata.kmf.PlaylistImport"/>
+		</set>
+		<bag name="playlistAssets" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="seq_num" collection-type="com.kuvata.kmf.logging.HistorizableLinkedList">
+			<key column="playlist_id" />			
+			<one-to-many class="com.kuvata.kmf.PlaylistAsset"/>
+		</bag>
+		<bag name="dynamicContentParts" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="seq_num" collection-type="com.kuvata.kmf.logging.HistorizableLinkedList">
+			<key column="parent_playlist_id" />			
+			<one-to-many class="com.kuvata.kmf.DynamicContentPart"/>
+		</bag>
+					
+		<filter name="playlistsFilter" condition="(playlist_id IN (SELECT DISTINCT(a.playlist_id) FROM playlist a, permission_entry pe WHERE a.playlist_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.playlist_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.playlist_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="playlistsFilterAdmin" condition="(playlist_id IN (SELECT DISTINCT(a.playlist_id) FROM playlist a, permission_entry pe WHERE a.playlist_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+					
+	</class>
+	
+	<filter-def name="playlistsFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="playlistsFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

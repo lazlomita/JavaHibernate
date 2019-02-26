@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Segment" table="segment">
+		<id name="segmentId" column="segment_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Segment</param>
+			</generator>
+		</id>						
+		<property name="segmentName" column="segment_name"/>	
+		<property name="length" column="length"/>	
+		<property name="startDatetime" column="start_datetime"/>
+		<property name="endType" column="end_type" />
+		<property name="endAfter" column="end_after"/>
+		<property name="endAfterUnits" column="end_after_units"  />		
+		<property name="priority" column="priority"  />
+		<property name="interruptionType" column="interruption_type" />	
+		<property name="useServerTime" column="use_server_time" />		
+		<property name="startBeforeTolerance" column="start_before_tolerance" />	
+		<property name="startBeforeToleranceUnits" column="start_before_tolerance_units" />			
+		<property name="startAfterTolerance" column="start_after_tolerance" />	
+		<property name="startAfterToleranceUnits" column="start_after_tolerance_units" />			
+		<property name="endBeforeTolerance" column="end_before_tolerance" />	
+		<property name="endBeforeToleranceUnits" column="end_before_tolerance_units" />			
+		<property name="endAfterTolerance" column="end_after_tolerance" />	
+		<property name="endAfterToleranceUnits" column="end_after_tolerance_units" />									
+		<property name="endAfterNumAssets" column="end_after_num_assets" />	
+		<property name="useAssetIntervalPlaylist" column="use_asset_interval_playlist" />	
+		<property name="assetIntervalFrequency" column="asset_interval_frequency" />	
+		<property name="assetIntervalNumAssets" column="asset_interval_num_assets" />								
+		<property name="assetIntervalUnits" column="asset_interval_units" />
+		<property name="type" column="type" />
+		<many-to-one class="com.kuvata.kmf.Playlist" name="assetIntervalPlaylist" cascade="none" column="asset_interval_playlist_id" />		
+		
+		<bag name="segmentParts" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="seq_num"  collection-type="com.kuvata.kmf.logging.HistorizableLinkedList">
+			<key column="segment_id" />
+			<one-to-many class="com.kuvata.kmf.SegmentPart"/>
+		</bag>							
+		<set name="segmentGrpMembers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="segment_id" />
+			<one-to-many class="com.kuvata.kmf.SegmentGrpMember"/>
+		</set>		
+		<set name="deviceSchedules" inverse="true" lazy="true" cascade="all-delete-orphan" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="segment_id" />
+			<one-to-many class="com.kuvata.kmf.DeviceSchedule"/>
+		</set>
+					
+		<filter name="segmentsFilter" condition="(segment_id IN (SELECT DISTINCT(a.segment_id) FROM segment a, permission_entry pe WHERE a.segment_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.segment_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.segment_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="segmentsFilterAdmin" condition="(segment_id IN (SELECT DISTINCT(a.segment_id) FROM segment a, permission_entry pe WHERE a.segment_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	
+	<filter-def name="segmentsFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>		
+	<filter-def name="segmentsFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

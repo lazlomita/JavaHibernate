@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Job" table="job">
+		<id name="jobId" column="job_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Job</param>
+			</generator>
+		</id>		
+		<property name="jobType" column="job_type"/>
+		<property name="status" column="status"/>
+		<property name="parameters" column="parameters"/>
+		<property name="createDt" column="create_dt"/>
+		<property name="lastModifiedDt" column="last_modified_dt"/>
+		<many-to-one class="com.kuvata.kmf.AppUser" name="appUser" cascade="none" column="appuser_id" />
+	</class>
+</hibernate-mapping>

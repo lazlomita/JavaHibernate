@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentSchedule" table="content_schedule">
+		<id name="contentScheduleId" type="long" column="content_schedule_id">
+	        <generator class="sequence">
+                <param name="sequence">content_schedule_seq</param>
+            </generator> 
+		</id>
+		<property name="runDt" column="run_dt"/>
+		<property name="startDt" column="start_dt"/>
+		<property name="endDt" column="end_dt"/>
+		<property name="serverStartDt" column="server_start_dt"/>
+		<property name="serverEndDt" column="server_end_dt"/>
+		<property name="seqNum" column="seq_num"/>
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />		
+	</class>
+</hibernate-mapping>

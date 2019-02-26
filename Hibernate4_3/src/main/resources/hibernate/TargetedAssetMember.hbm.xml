@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.TargetedAssetMember" table="targeted_asset_member">
+		<id name="targetedAssetMemberId" column="targeted_asset_member_id">
+			<generator class="sequence">
+                <param name="sequence">targeted_asset_member_seq</param>
+            </generator>
+		</id>						
+		<many-to-one class="com.kuvata.kmf.Asset" name="targetedAsset" cascade="none" column="targeted_asset_id" />		
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />
+		<many-to-one class="com.kuvata.kmf.Grp" name="deviceGrp" cascade="none" column="device_grp_id" />
+		<many-to-one class="com.kuvata.kmf.attr.AttrDefinition" name="attrDefinition" cascade="none" column="attr_definition_id" />	
+		<property name="attrValue" column="attr_value"/>
+		<property name="hql" column="hql"/>
+		<property name="seqNum" column="seq_num"/>				
+	</class>
+</hibernate-mapping>

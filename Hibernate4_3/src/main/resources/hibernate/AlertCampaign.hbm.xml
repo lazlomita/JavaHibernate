@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AlertCampaign" table="alert_campaign">
+		<id name="alertCampaignId" column="alert_campaign_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.AlertCampaign</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Alert" name="alert" cascade="none" column="alert_id" />	
+		<many-to-one class="com.kuvata.kmf.billing.Campaign" name="campaign" cascade="none" column="campaign_id" />
+	</class>
+</hibernate-mapping>

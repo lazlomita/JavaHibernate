@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Alert" table="alert">
+		<id name="alertId" column="alert_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Alert</param>
+			</generator>
+		</id>		
+		<property name="alertName" column="alert_name"/>
+		<property name="className" column="class_name"/>
+		<property name="parameters" column="parameters"/>
+		<property name="frequency" column="frequency"/>		
+		<property name="isActive" column="is_active"/>
+		<property name="alertAllDevices" column="alert_all_devices"/>
+		<property name="alertAllCampaigns" column="alert_all_campaigns"/>
+		<property name="activeStartTime" column="active_start_time"/>						
+		<property name="activeEndTime" column="active_end_time"/>
+		<property name="lastResults" column="last_results"/>
+		<property name="onlyAlertOnChange" column="only_alert_on_change"/>
+		<property name="minimumTime" column="minimum_time"/>
+		<property name="attemptToFix" column="attempt_to_fix"/>
+		<property name="alertIfContentScheduled" column="alert_if_content_scheduled"/>
+		<property name="showHeartbeatingDevices" column="show_heartbeating_devices"/>
+		<property name="showContentRemaining" column="show_content_remaining"/>
+		<property name="includeFutureContent" column="include_future_content"/>
+		<property name="lastRunDt" column="last_run_dt"/>
+		<property name="numDevices" column="num_devices"/>
+
+		<set name="alertDevices" inverse="true" lazy="true" cascade="none" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="alert_id" />
+			<one-to-many class="com.kuvata.kmf.AlertDevice"/>
+		</set>	
+		<set name="alertUsers" inverse="true" lazy="true" cascade="none" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="alert_id" />
+			<one-to-many class="com.kuvata.kmf.AlertUser"/>
+		</set>
+		<set name="alertCampaigns" inverse="true" lazy="true" cascade="none" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="alert_id" />
+			<one-to-many class="com.kuvata.kmf.AlertCampaign"/>
+		</set>
+			
+	</class>
+</hibernate-mapping>

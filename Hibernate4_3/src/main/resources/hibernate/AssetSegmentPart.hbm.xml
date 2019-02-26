@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AssetSegmentPart" table="asset_segment_part">
+		<id name="assetSegmentPartId" column="asset_segment_part_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.AssetSegmentPart</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="all" column="asset_id" />
+	</class>
+</hibernate-mapping>

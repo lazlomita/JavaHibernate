@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.billing.Advertiser" table="advertiser">
+		<id name="advertiserId" column="advertiser_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.billing.Advertiser</param>
+			</generator>
+		</id>		
+		<property name="advertiserName" column="advertiser_name"/>
+					
+		<filter name="advertisersFilter" condition="(advertiser_id IN (SELECT DISTINCT(a.advertiser_id) FROM advertiser a, permission_entry pe WHERE a.advertiser_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.advertiser_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.advertiser_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="advertisersFilterAdmin" condition="(advertiser_id IN (SELECT DISTINCT(a.advertiser_id) FROM advertiser a, permission_entry pe WHERE a.advertiser_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	
+	<filter-def name="advertisersFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="advertisersFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+</hibernate-mapping>

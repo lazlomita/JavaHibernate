@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PermissionEntry" table="permission_entry">
+		<id name="permissionEntryId" column="permission_entry_id">
+			<generator class="sequence">
+                <param name="sequence">permission_entry_seq</param>
+            </generator>
+		</id>		
+		<property name="permissionEntityId" column="permission_entity_id"/>
+		<many-to-one class="com.kuvata.kmf.Role" name="role" cascade="none" column="role_id" />
+	</class>
+</hibernate-mapping>

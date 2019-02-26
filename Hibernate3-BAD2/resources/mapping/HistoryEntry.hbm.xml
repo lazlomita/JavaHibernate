@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.kuvata.kmf.logging.HistoryEntry" table="history_entry">
+        <id name="historyId" type="java.lang.Long">
+            <column name="HISTORY_ID" />
+            <generator class="native">
+		<param name="sequence">history_seq</param>
+	    </generator>    
+        </id>
+	<property name="entityId" column="entity_id" />
+	<property name="entityClass" column="entity_class" />
+        <property name="program" column="program" />
+        <property name="action" column="action" />
+        <property name="property" column="property" />
+        <property name="username" column="username" />        
+        <property name="timestamp" column="timestamp" />
+        <property name="oldValue" column="old_value" />
+        <property name="newValue" column="new_value" />
+    </class>
+</hibernate-mapping>
+

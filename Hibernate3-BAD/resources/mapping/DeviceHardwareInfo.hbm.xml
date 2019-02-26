@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.DeviceHardwareInfo" table="device_hardware_info">
+		<id name="deviceHardwareInfoId" type="long" column="device_hardware_info_id" >
+        	<generator class="increment"/>
+     	</id>
+		<property name="sysmake" column="sysmake"/>
+		<property name="sysmodel" column="sysmodel"/>	
+		<property name="boardmfg" column="boardmfg"/>	
+		<property name="boardmodel" column="boardmodel"/>				
+		<property name="encfs" column="encfs"/>
+		<property name="drivesize" column="drivesize"/>
+		<property name="bootloc" column="bootloc"/>
+		<property name="bootsize" column="bootsize"/>
+		<property name="rootloc" column="rootloc"/>
+		<property name="rootsize" column="rootsize"/>
+		<property name="swaploc" column="swaploc"/>
+		<property name="swapsize" column="swapsize"/>
+		<property name="contentloc" column="contentloc"/>
+		<property name="contentsize" column="contentsize"/>
+		<property name="videocard" column="videocard"/>
+		<property name="audiochipset" column="audiochipset"/>
+		<property name="sysram" column="sysram"/>
+		<property name="procinfo" column="procinfo"/>
+		<property name="corecount" column="corecount"/>
+		<property name="ethernetchipset" column="ethernetchipset"/>
+		<property name="usbtype" column="usbtype"/>
+		<property name="ttys0" column="ttys0"/>
+		<property name="ttys1" column="ttys1"/>
+		<property name="ttys2" column="ttys2"/>
+		<property name="ttys3" column="ttys3"/>
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />
+	</class>
+</hibernate-mapping>

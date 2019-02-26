@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Alive" table="alive">
+		<id name="aliveId" column="alive_id">
+			<generator class="sequence"> 
+				<param name="sequence">alive_seq</param>
+			</generator>
+		</id>		
+		<property name="msg" column="msg"/>			
+	</class>
+</hibernate-mapping>

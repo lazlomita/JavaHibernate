@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 	
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	
+	<class name="com.kuvata.kmf.HeartbeatEvent" table="heartbeat_event">
+		<id name="heartbeatEventId" column="heartbeat_event_id">
+            <generator class="sequence">
+                <param name="sequence">heartbeat_event_seq</param>
+            </generator>  
+		</id>		
+		<property name="dt" column="dt"/>
+		<property name="deviceId" column="device_id"/>
+		<property name="downloadsInProgress" column="downloads_in_progress"/>
+		<property name="uploadsInProgress" column="uploads_in_progress"/>
+		<property name="contentSchedulesInStaging" column="content_schedules_in_staging"/>
+		<property name="lastContentSchedule" column="last_content_schedule"/>
+		<property name="isLastHeartbeat" column="is_last_heartbeat"/>
+		<property name="deviceResourceUtilization" column="device_resource_utilization"/>
+		<property name="multicastTest" column="multicast_test"/>
+		<property name="bytesToDownload" column="bytes_to_download"/>
+		<property name="lastServiceMode" column="last_service_mode"/>
+		<property name="bandwidthUtilization" column="bandwidth_utilization"/>
+	</class>
+	
+</hibernate-mapping>

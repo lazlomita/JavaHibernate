@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Layout" table="layout">
+		<id name="layoutId" column="layout_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Layout</param>
+			</generator>
+		</id>		
+		<property name="layoutName" column="layout_name"/>
+		<property name="width" column="width"/>
+		<property name="height" column="height"/>		
+		<set name="layoutDisplayareas" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="seq_num" collection-type="com.kuvata.kmf.logging.HistorizableLinkedSet">
+			<key column="layout_id" />
+			<one-to-many class="com.kuvata.kmf.LayoutDisplayarea"/>
+		</set>
+					
+		<filter name="layoutsFilter" condition="(layout_id IN (SELECT DISTINCT(a.layout_id) FROM layout a, permission_entry pe WHERE a.layout_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.layout_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.layout_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="layoutsFilterAdmin" condition="(layout_id IN (SELECT DISTINCT(a.layout_id) FROM layout a, permission_entry pe WHERE a.layout_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	<filter-def name="layoutsFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="layoutsFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

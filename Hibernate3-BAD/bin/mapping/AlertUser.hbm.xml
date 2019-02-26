@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AlertUser" table="alert_user">
+		<id name="alertUserId" column="alert_user_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.AlertUser</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Alert" name="alert" cascade="none" column="alert_id" />					
+		<property name="userId" column="user_id" />
+	</class>
+</hibernate-mapping>

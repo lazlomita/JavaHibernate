@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.DeviceSchedule" table="device_schedule">
+		<id name="deviceScheduleId" column="device_schedule_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.DeviceSchedule</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />
+		<many-to-one class="com.kuvata.kmf.Segment" name="segment" cascade="none" column="segment_id" />		
+	</class>
+</hibernate-mapping>

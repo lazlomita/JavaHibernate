@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentSchedulerStatus" table="content_scheduler_status">
+		<id name="contentSchedulerStatusId" column="content_scheduler_status_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.ContentSchedulerStatus</param>
+			</generator>
+		</id>		
+		<property name="dt" column="dt"/>
+		<property name="args" column="args" />
+		<property name="status" column="status" />	
+		<property name="contentSchedulerStatus" column="content_scheduler_status" />
+		<many-to-one class="com.kuvata.kmf.ContentUpdate" name="contentUpdate" cascade="none" column="content_update_id" />
+		
+		<filter name="contentSchedulerStatusFilter" condition="content_scheduler_status_id IN 
+			(SELECT ei.entity_id from entity_instance ei where ei.entity_id = content_scheduler_status_id 
+			AND ei.appuser_id = :appUserId)" />	
+	</class>
+	
+	<filter-def name="contentSchedulerStatusFilter">
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	</filter-def>		
+</hibernate-mapping>

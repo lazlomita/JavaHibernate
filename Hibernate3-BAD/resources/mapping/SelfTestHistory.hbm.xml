@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.SelfTestHistory" table="self_test_history">
+		<id name="selfTestHistoryId" column="self_test_history_id">
+			<generator class="sequence">
+                <param name="sequence">self_test_history_seq</param>
+            </generator>
+		</id>	
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />			
+		<property name="dt" column="dt"/>
+		<property name="initialConnectionTest" column="initial_connection_test"/>
+		<property name="dispatcherServerTest" column="dispatcher_server_test"/>
+		<property name="contentServerTest" column="content_server_test"/>
+		<property name="dispatcherServerRsyncTest" column="dispatcher_server_rsync_test"/>
+		<property name="contentServerRsyncTest" column="content_server_rsync_test"/>
+		<property name="dispatcherPingTest" column="dispatcher_ping_test"/>
+		<property name="vpnPingTest" column="vpn_ping_test"/>			
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Dirty" table="dirty">
+		<id name="dirtyId" column="dirty_id">
+			<generator class="sequence">
+                <param name="sequence">persistent_entity_seq</param>
+            </generator>
+		</id>
+		<property name="dirtyEntityId" column="dirty_entity_id"/>
+		<property name="dirtyType" column="dirty_type"/>
+		<property name="createDt" column="create_dt"/>
+		<many-to-one class="com.kuvata.kmf.AppUser" name="appUser" cascade="none" column="appuser_id" />
+		<property name="status" column="status"/>
+					
+		<filter name="dirtyFilter" condition="(dirty_entity_id IN (SELECT DISTINCT(a.dirty_entity_id) FROM dirty a, permission_entry pe WHERE a.dirty_entity_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.dirty_entity_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.dirty_entity_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="dirtyFilterAdmin" condition="(dirty_entity_id IN (SELECT DISTINCT(a.dirty_entity_id) FROM dirty a, permission_entry pe WHERE a.dirty_entity_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+					
+	</class>
+	<filter-def name="dirtyFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="dirtyFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

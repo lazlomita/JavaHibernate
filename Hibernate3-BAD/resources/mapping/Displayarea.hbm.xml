@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Displayarea" table="displayarea">
+		<id name="displayareaId" column="displayarea_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Displayarea</param>
+			</generator>
+		</id>		
+		<property name="displayareaName" column="displayarea_name"/>
+		<property name="width" column="width"/>
+		<property name="height" column="height"/>
+		<property name="aspectRatio" column="aspect_ratio"/>
+		<property name="isShared" column="shared"/>
+		<property name="audioChannel" column="audio_channel"/>
+		<property name="triggerable" column="triggerable"/>
+		<set name="layoutDisplayareas" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="displayarea_id" />
+			<one-to-many class="com.kuvata.kmf.LayoutDisplayarea"/>
+		</set>			
+		<set name="pairedDisplayareas" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="displayarea_id" />
+			<one-to-many class="com.kuvata.kmf.PairedDisplayarea"/>
+		</set>					
+		<set name="displayareaAssetTypes" lazy="true" table="displayarea_asset_type" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="displayarea_id" />
+			<composite-element class="com.kuvata.kmf.DisplayareaAssetType">
+				<parent name="displayarea" />
+				<property name="assetType" column="asset_type" type="parkmedia.usertype.AssetType" />
+			</composite-element>
+		</set>
+					
+		<filter name="displayareasFilter" condition="(displayarea_id IN (SELECT DISTINCT(a.displayarea_id) FROM displayarea a, permission_entry pe WHERE a.displayarea_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.displayarea_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.displayarea_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="displayareasFilterAdmin" condition="(displayarea_id IN (SELECT DISTINCT(a.displayarea_id) FROM displayarea a, permission_entry pe WHERE a.displayarea_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	<filter-def name="displayareasFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="displayareasFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

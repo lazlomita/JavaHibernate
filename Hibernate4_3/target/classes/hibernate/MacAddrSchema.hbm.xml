@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.MacAddrSchema" table="kmf.mac_addr_schema">
+		<id name="macAddrSchemaId" column="mac_addr_schema_id">
+			<generator class="increment"/>
+		</id>	
+		<property name="macAddr" column="mac_addr"/>	
+		<many-to-one class="com.kuvata.kmf.Schema" name="schema" cascade="none" column="schema_id" />			
+	</class>
+</hibernate-mapping>

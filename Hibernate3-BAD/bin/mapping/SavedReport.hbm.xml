@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.reports.SavedReport" table="saved_report">
+		<id name="savedReportId" column="saved_report_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.reports.SavedReport</param>
+			</generator>
+		</id>		
+		<property name="name" column="name"/>
+		<property name="reportType" column="report_type"/>
+		<property name="dateRangeType" column="date_range_type"/>
+		<property name="startDay" column="start_day"/>
+		<property name="endDay" column="end_day"/>
+		<property name="showDetails" column="show_details"/>		
+		<property name="showByDeviceGroup" column="show_by_device_group"/>
+		<property name="showZeros" column="show_zeros"/>
+		<property name="useRoles" column="use_roles"/>
+		<property name="autoRun" column="auto_run"/>
+		<property name="lastAutoRun" column="last_auto_run"/>
+		<property name="detailsFilter" column="details_filter"/>
+		
+		<set name="savedReportFiles" inverse="true" lazy="true" order-by="create_dt desc" cascade="all-delete-orphan">
+			<key column="saved_report_id" />
+			<one-to-many class="com.kuvata.kmf.reports.SavedReportFiles"/>
+		</set>
+					
+		<filter name="savedReportsFilter" condition="(saved_report_id IN (SELECT DISTINCT(a.saved_report_id) FROM saved_report a, permission_entry pe WHERE a.saved_report_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.saved_report_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.saved_report_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="savedReportsFilterAdmin" condition="(saved_report_id IN (SELECT DISTINCT(a.saved_report_id) FROM saved_report a, permission_entry pe WHERE a.saved_report_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	
+	<filter-def name="savedReportsFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="savedReportsFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	
+</hibernate-mapping>

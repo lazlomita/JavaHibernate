@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PlaylistAsset" table="playlist_asset">
+		<id name="playlistAssetId" column="playlist_asset_id">
+			<generator class="sequence">
+                <param name="sequence">playlist_asset_seq</param>
+            </generator>
+		</id>		
+		<property name="seqNum" column="seq_num" update="true" insert="true" />
+		<many-to-one class="com.kuvata.kmf.Playlist" name="playlist" cascade="none" column="playlist_id" />
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />		
+		<many-to-one class="com.kuvata.kmf.AssetPresentation" name="assetPresentation" cascade="none" column="asset_presentation_id" />				
+	</class>
+</hibernate-mapping>

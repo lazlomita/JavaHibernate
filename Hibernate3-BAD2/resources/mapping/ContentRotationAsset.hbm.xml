@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentRotationAsset" table="content_rotation_asset">
+		<id name="contentRotationAssetId" column="content_rotation_asset_id">
+			<generator class="sequence">
+                <param name="sequence">content_rotation_asset_seq</param>
+            </generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.ContentRotation" name="contentRotation" cascade="none" column="content_rotation_id" />
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />				
+		<property name="seqNum" column="seq_num" update="true" insert="true" />
+		<property name="length" column="length"/>
+		<property name="variableLength" column="variable_length"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.LayoutDisplayarea" table="layout_displayarea">
+		<id name="layoutDisplayareaId" column="layout_displayarea_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.LayoutDisplayarea</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Layout" name="layout" cascade="none" column="layout_id" />
+		<many-to-one class="com.kuvata.kmf.Displayarea" name="displayarea" cascade="none" column="displayarea_id" />
+		<property name="xpos" column="xpos"/>
+		<property name="ypos" column="ypos"/>
+		<property name="seqNum" column="seq_num"/>
+	</class>
+</hibernate-mapping>

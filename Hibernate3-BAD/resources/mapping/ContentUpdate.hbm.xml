@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentUpdate" table="content_update">
+		<id name="contentUpdateId" column="content_update_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.ContentUpdate</param>
+			</generator>
+		</id>		
+		<property name="createDt" column="create_dt"/>
+		<property name="filename" column="filename"/>
+		<property name="filesize" column="filesize"/>
+					
+		<filter name="contentUpdateFilter" condition="(content_update_id IN (SELECT DISTINCT(a.content_update_id) FROM content_update a, permission_entry pe WHERE a.content_update_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.content_update_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.content_update_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="contentUpdateFilterAdmin" condition="(content_update_id IN (SELECT DISTINCT(a.content_update_id) FROM content_update a, permission_entry pe WHERE a.content_update_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	
+	<filter-def name="contentUpdateFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="contentUpdateFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	
+</hibernate-mapping>

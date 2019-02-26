@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AssetExclusion" table="asset_exclusion">
+		<id name="assetExclusionId" column="asset_exclusion_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.AssetExclusion</param>
+			</generator>
+		</id>		
+		<property name="excludedDate" column="excluded_date"/>																		
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />		
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />		
+	</class>
+</hibernate-mapping>

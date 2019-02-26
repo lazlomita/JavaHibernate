@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PairedAsset" table="paired_asset">
+		<id name="pairedAssetId" column="paired_asset_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.PairedAsset</param>
+			</generator>
+		</id>				
+		<many-to-one class="com.kuvata.kmf.PairedDisplayarea" name="pairedDisplayarea" cascade="none" column="PAIRED_DISPLAYAREA_ID" />
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />		
+		<property name="seqNum" column="seq_num"/>
+		<property name="length" column="length"/>
+	</class>
+</hibernate-mapping>

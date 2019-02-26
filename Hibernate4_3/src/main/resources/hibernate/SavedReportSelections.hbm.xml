@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.reports.SavedReportSelections" table="saved_report_selections">
+		<id name="savedReportSelectionsId" type="long" column="saved_report_selections_id">
+	        <generator class="sequence">
+                <param name="sequence">selected_entities_seq</param>
+            </generator> 
+		</id>		
+		<property name="selectedEntityId" column="selected_entity_id"/>
+		
+		<many-to-one class="com.kuvata.kmf.reports.SavedReport" name="savedReport" cascade="none" column="saved_report_id" />
+		<many-to-one class="com.kuvata.kmf.EntityClass" name="selectedEntityClass" cascade="none" column="selected_entity_class_id" />
+	</class>
+</hibernate-mapping>

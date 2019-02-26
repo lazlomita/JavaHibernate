@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ExcludedPlaylist" table="excluded_playlist">
+		<id name="excludedPlaylistId" column="excluded_playlist_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.ExcludedPlaylist</param>
+			</generator>
+		</id>				
+		<many-to-one class="com.kuvata.kmf.Playlist" name="ownerPlaylist" column="owner_playlist_id" outer-join="false"/>			
+		<many-to-one class="com.kuvata.kmf.Playlist" name="playlist" column="playlist_id" outer-join="false"/>	
+	</class>
+</hibernate-mapping>

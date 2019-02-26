@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PlaybackEventSummary" table="playback_event_summary">
+		<id name="playbackEventSummaryId" column="playback_event_summary_id">
+			<generator class="sequence">
+                <param name="sequence">playback_event_seq</param>
+            </generator>
+		</id>		
+		<property name="deviceId" column="device_id"/>
+		<property name="deviceName" column="device_name"/>
+		<property name="assetId" column="asset_id"/>
+		<property name="assetName" column="asset_name"/>
+		<property name="airingLength" column="airing_length"/>
+		<property name="displayAiringLength" column="display_airing_length"/>		
+		<property name="startDatetime" column="start_datetime"/>
+		<property name="displaysCount" column="displays_count"/>
+		<property name="displayExceptionsCount" column="display_exceptions_count"/>
+		<property name="clickCount" column="click_count"/>
+		<property name="numAirings" column="num_airings"/>
+					
+		<filter name="playbackEventsAssetFilter" condition="(asset_id IN (SELECT DISTINCT(a.asset_id) FROM asset a, permission_entry pe WHERE a.asset_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.asset_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.asset_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="playbackEventsAssetFilterAdmin" condition="(asset_id IN (SELECT DISTINCT(a.asset_id) FROM asset a, permission_entry pe WHERE a.asset_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+		
+		<filter name="playbackEventsDeviceFilter" condition="(device_id IN (SELECT DISTINCT(a.device_id) FROM device a, permission_entry pe WHERE a.device_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.device_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.device_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="playbackEventsDeviceFilterAdmin" condition="(device_id IN (SELECT DISTINCT(a.device_id) FROM device a, permission_entry pe WHERE a.device_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+					
+	</class>
+	
+	<filter-def name="playbackEventsAssetFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	     	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	<filter-def name="playbackEventsDeviceFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	     	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="playbackEventsAssetFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	<filter-def name="playbackEventsDeviceFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>				
+</hibernate-mapping>

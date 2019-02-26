@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.attr.AttrDefinition" table="attr_definition">
+		<id name="attrDefinitionId" column="attr_definition_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.attr.AttrDefinition</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.EntityClass" name="entityClass" cascade="none" column="entity_class_id" />		
+		<property name="attrDefinitionName" column="attr_definition_name"/>
+		<property name="type" column="type"/>			
+		<property name="searchInterface" column="search_interface"/>
+		<property name="adServer" column="ad_server"/>
+		<property name="showInReport" column="show_in_report"/>
+		<property name="seqNum" column="seq_num"/>
+		<set name="attrs" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="attr_definition_id" />
+			<one-to-many class="com.kuvata.kmf.attr.Attr"/>
+		</set>
+					
+		<filter name="attrDefinitionFilter" condition="(attr_definition_id IN (SELECT DISTINCT(a.attr_definition_id) FROM attr_definition a, permission_entry pe WHERE a.attr_definition_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.attr_definition_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.attr_definition_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="attrDefinitionFilterAdmin" condition="(attr_definition_id IN (SELECT DISTINCT(a.attr_definition_id) FROM attr_definition a, permission_entry pe WHERE a.attr_definition_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+					
+	</class>
+	
+	<filter-def name="attrDefinitionFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="attrDefinitionFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

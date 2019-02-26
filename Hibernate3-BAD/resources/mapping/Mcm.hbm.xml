@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Mcm" table="mcm">
+		<id name="mcmId" column="mcm_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Mcm</param>
+			</generator>
+		</id>		
+		<property name="mcmName" column="mcm_name"/>
+		<property name="mcmHoststring" column="mcm_hoststring"/>
+		<property name="switchToAuxCommand" column="switch_to_aux_command"/>
+		<property name="switchToMediacastCommand" column="switch_to_mediacast_command"/>
+		<property name="onCommand" column="on_command"/>
+		<property name="offCommand" column="off_command"/>
+		<property name="currentPowerCommand" column="current_power_command"/>
+		<property name="currentVolumeCommand" column="current_volume_command"/>
+		<property name="currentInputCommand" column="current_input_command"/>
+		<property name="currentBrightnessCommand" column="current_brightness_command"/>
+		<property name="currentContrastCommand" column="current_contrast_command"/>
+		<property name="currentButtonLockCommand" column="current_button_lock_command"/>
+		<property name="setVolumeCommand" column="set_volume_command"/>
+		<property name="osdOnCommand" column="osd_on_command"/>
+		<property name="osdOffCommand" column="osd_off_command"/>
+		<property name="autoAdjustCommand" column="auto_adjust_command"/>		
+		<property name="serialPort" column="serial_port"/>	
+		<property name="peripheralName" column="peripheral_name"/>
+		<property name="peripheralType" column="peripheral_type"/>					
+		<property name="diagnosticInterval" column="diagnostic_interval"/>		
+		<property name="implementationType" column="implementation_type"/>
+		<property name="setInversionOnCommand" column="set_inversion_on_command"/>
+		<property name="setInversionOffCommand" column="set_inversion_off_command"/>								
+		<property name="setSignalPatternOnCommand" column="set_signal_pattern_on_command"/>								
+		<property name="setSignalPatternOffCommand" column="set_signal_pattern_off_command"/>								
+		<property name="setPixelShiftOnCommand" column="set_pixel_shift_on_command"/>								
+		<property name="setPixelShiftOffCommand" column="set_pixel_shift_off_command"/>
+		<property name="volumeOffsetCommand" column="volume_offset_command"/>
+		<property name="wooferOffsetCommand" column="woofer_offset_command"/>
+		<property name="responseTimeCommand" column="response_time_command"/>
+		<property name="minGainCommand" column="min_gain_command"/>		
+		<property name="maxGainCommand" column="max_gain_command"/>
+		<property name="muteCommand" column="mute_command"/>
+		<property name="buttonLockOnCommand" column="button_lock_on_command"/>	
+		<property name="buttonLockOffCommand" column="button_lock_off_command"/>
+		<property name="setBrightnessSignalCommand" column="set_brightness_signal_command"/>
+		<property name="setContrastSignalCommand" column="set_contrast_signal_command"/>
+		<property name="inputSelectionCommand" column="input_selection_command"/>
+		<property name="frontPanelLockCommand" column="front_panel_lock_command"/>
+		<property name="videoMuteCommand" column="video_mute_command"/>
+		<property name="audioMuteCommand" column="audio_mute_command"/>
+		<property name="currentAudioSourceCommand" column="current_audio_source_command"/>
+		<property name="currentSpeakerCommand" column="current_speaker_command"/>
+		<property name="currentPowerSaveCommand" column="current_power_save_command"/>
+		<property name="currentRemoteControlCommand" column="current_remote_control_command"/>
+		<property name="currentTemperatureCommand" column="current_temperature_command"/>
+		<property name="currentSerialCodeCommand" column="current_serial_code_command"/>
+		<property name="setAudioSourceCommand" column="set_audio_source_command"/>
+		<property name="setSpeakerCommand" column="set_speaker_command"/>
+		<property name="setPowerSaveCommand" column="set_power_save_command"/>
+		<property name="setRemoteControlCommand" column="set_remote_control_command"/>
+																																																										
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />	
+			
+		<set name="historyEntries" inverse="true" lazy="true" cascade="none" order-by="timestamp desc">
+			<key column="mcm_id" />
+			<one-to-many class="com.kuvata.kmf.McmHistoryEntry"/>
+		</set>
+					
+		<filter name="mcmFilter" condition="(mcm_id IN (SELECT DISTINCT(a.mcm_id) FROM mcm a, permission_entry pe WHERE a.mcm_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.mcm_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.mcm_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="mcmFilterAdmin" condition="(mcm_id IN (SELECT DISTINCT(a.mcm_id) FROM mcm a, permission_entry pe WHERE a.mcm_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />					
+	</class>
+	
+	<filter-def name="mcmFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="mcmFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	
+</hibernate-mapping>

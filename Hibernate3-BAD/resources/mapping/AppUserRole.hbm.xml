@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AppUserRole" table="kmf.appuser_role">
+		<id name="appUserRoleId" column="appuser_role_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.AppUserRole</param>
+			</generator>
+		</id>				
+		<many-to-one class="com.kuvata.kmf.AppUser" name="appUser" cascade="none" column="appuser_id" />		
+		<many-to-one class="com.kuvata.kmf.Role" name="role" cascade="none" column="role_id" />		
+		<property name="isDefault" column="is_default" type="java.lang.Boolean" />
+		<property name="isViewable" column="is_viewable" type="java.lang.Boolean" />				
+	</class>
+</hibernate-mapping>

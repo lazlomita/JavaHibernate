@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Grp" table="grp">
+		<id name="grpId" column="grp_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Grp</param>
+			</generator>
+		</id>		
+		<property name="grpName" column="grp_name"/>
+		<set name="grpMembers" inverse="true" lazy="true" cascade="all-delete-orphan" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="grp_id" />
+			<one-to-many class="com.kuvata.kmf.GrpMember"/>
+				
+			<filter name="grpMemberFilter" condition="(grp_member_id IN ((select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND ggm.child_grp_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = ggm.child_grp_id AND ei.appuser_id = :appUserId ) ) ) )))"/>
+			
+			<filter name="playlistGrpMemberFilter" condition="(grp_member_id IN ((select pgm.playlist_grp_member_id from playlist_grp_member pgm, grp_member gm, permission_entry pe where pgm.playlist_grp_member_id = gm.grp_member_id
+				AND pgm.playlist_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND pgm.playlist_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = pgm.playlist_id AND ei.appuser_id = :appUserId ) ) ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND ggm.child_grp_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = ggm.child_grp_id AND ei.appuser_id = :appUserId ) ) ) )))"/>
+				
+			<filter name="deviceGrpMemberFilter" condition="(grp_member_id IN ((select dgm.device_grp_member_id from device_grp_member dgm, grp_member gm, permission_entry pe where dgm.device_grp_member_id = gm.grp_member_id
+				AND dgm.device_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND dgm.device_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = dgm.device_id AND ei.appuser_id = :appUserId ) ) ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND ggm.child_grp_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = ggm.child_grp_id AND ei.appuser_id = :appUserId ) ) ) )))"/>
+				
+			<filter name="segmentGrpMemberFilter" condition="(grp_member_id IN ((select sgm.segment_grp_member_id from segment_grp_member sgm, grp_member gm, permission_entry pe where sgm.segment_grp_member_id = gm.grp_member_id
+				AND sgm.segment_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND sgm.segment_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = sgm.segment_id AND ei.appuser_id = :appUserId ) ) ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND ggm.child_grp_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = ggm.child_grp_id AND ei.appuser_id = :appUserId ) ) ) )))"/>
+				
+			<filter name="contentRotationGrpMemberFilter" condition="(grp_member_id IN ((select crgm.content_rotation_grp_member_id from content_rotation_grp_member crgm, grp_member gm, permission_entry pe where crgm.content_rotation_grp_member_id = gm.grp_member_id
+				AND crgm.content_rotation_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND crgm.content_rotation_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = crgm.content_rotation_id AND ei.appuser_id = :appUserId ) ) ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR (NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND ggm.child_grp_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = ggm.child_grp_id AND ei.appuser_id = :appUserId ) ) ) )))"/>
+				
+			<filter name="grpMemberFilterAdmin" condition="(grp_member_id IN ((select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) ))"/>
+				
+			<filter name="playlistGrpMemberFilterAdmin" condition="(grp_member_id IN ((select pgm.playlist_grp_member_id from playlist_grp_member pgm, grp_member gm, permission_entry pe where pgm.playlist_grp_member_id = gm.grp_member_id
+				AND pgm.playlist_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) ))"/>
+		
+			<filter name="deviceGrpMemberFilterAdmin" condition="(grp_member_id IN ((select dgm.device_grp_member_id from device_grp_member dgm, grp_member gm, permission_entry pe where dgm.device_grp_member_id = gm.grp_member_id
+				AND dgm.device_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) ))"/>
+				
+			<filter name="segmentGrpMemberFilterAdmin" condition="(grp_member_id IN ((select sgm.segment_grp_member_id from segment_grp_member sgm, grp_member gm, permission_entry pe where sgm.segment_grp_member_id = gm.grp_member_id
+				AND sgm.segment_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) ))"/>
+				
+			<filter name="contentRotationGrpMemberFilterAdmin" condition="(grp_member_id IN ((select crgm.content_rotation_grp_member_id from content_rotation_grp_member crgm, grp_member gm, permission_entry pe where crgm.content_rotation_grp_member_id = gm.grp_member_id
+				AND crgm.content_rotation_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) )
+				UNION(select ggm.grp_grp_member_id from grp_grp_member ggm, grp_member gm, permission_entry pe where ggm.grp_grp_member_id = gm.grp_member_id
+				AND ggm.child_grp_id = pe.permission_entity_id(+) AND gm.grp_id = grp_id AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) ))"/>
+				
+		</set>	
+		<set name="grpGrpMembers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="child_grp_id" />
+			<one-to-many class="com.kuvata.kmf.GrpGrpMember"/>
+		</set>
+					
+		<filter name="grpsFilter" condition="(grp_id IN (SELECT DISTINCT(a.grp_id) FROM grp a, permission_entry pe WHERE a.grp_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.grp_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.grp_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="grpsFilterAdmin" condition="(grp_id IN (SELECT DISTINCT(a.grp_id) FROM grp a, permission_entry pe WHERE a.grp_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+		
+	</class>
+	<filter-def name="grpsFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>		
+	<filter-def name="grpsFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>		
+	<filter-def name="grpMemberFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="playlistGrpMemberFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>					
+	<filter-def name="deviceGrpMemberFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="segmentGrpMemberFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	<filter-def name="contentRotationGrpMemberFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="grpMemberFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />   	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="playlistGrpMemberFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>					
+	<filter-def name="deviceGrpMemberFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="segmentGrpMemberFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+	<filter-def name="contentRotationGrpMemberFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+</hibernate-mapping>

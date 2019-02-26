@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PlaylistSegmentPart" table="playlist_segment_part">
+		<id name="playlistSegmentPartId" column="playlist_segment_part_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.PlaylistSegmentPart</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Playlist" name="playlist" cascade="save-update" column="playlist_id" />
+	</class>
+</hibernate-mapping>

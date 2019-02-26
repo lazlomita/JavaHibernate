@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.attr.Attr" table="attr" proxy="com.kuvata.kmf.attr.IAttr">
+		<id name="attrId" column="attr_id">
+			<generator class="sequence">
+                <param name="sequence">attr_seq</param>
+            </generator>
+		</id>		
+		<discriminator column="type" type="string" />
+				
+		<property name="attrName" column="attr_name"/>		
+		<many-to-one class="com.kuvata.kmf.attr.AttrDefinition" name="attrDefinition" cascade="none" column="attr_definition_id" />
+		<property name="ownerId" column="owner_id"/>
+		<property name="valueId" column="value_id"/>
+		
+		<subclass name="com.kuvata.kmf.attr.StringAttr" discriminator-value="com.kuvata.kmf.attr.StringAttr" proxy="com.kuvata.kmf.attr.IStringAttr">
+			<property name="value" column="string_value"/>
+		</subclass>	
+		<subclass name="com.kuvata.kmf.attr.NumberAttr" discriminator-value="com.kuvata.kmf.attr.NumberAttr" proxy="com.kuvata.kmf.attr.INumberAttr">
+			<property name="value" column="number_value"/>
+		</subclass>			
+		<subclass name="com.kuvata.kmf.attr.DateAttr" discriminator-value="com.kuvata.kmf.attr.DateAttr" proxy="com.kuvata.kmf.attr.IDateAttr">
+			<property name="value" column="date_value"/>
+		</subclass>					
+	</class>
+</hibernate-mapping>

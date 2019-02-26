@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.MulticastNetwork" table="multicast_network">
+		<id name="multicastNetworkId" column="multicast_network_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.MulticastNetwork</param>
+			</generator>
+		</id>	
+		<property name="name" column="name"/>
+		<property name="multicastAddress" column="multicast_address"/>
+		<property name="bandwidth" column="bandwidth"/>
+		<property name="serverPort" column="server_port"/>
+		<property name="devicePort" column="device_port"/>
+	</class>
+</hibernate-mapping>

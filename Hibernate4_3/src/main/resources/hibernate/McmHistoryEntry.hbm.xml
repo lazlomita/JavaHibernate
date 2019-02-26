@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.McmHistoryEntry" table="mcm_history">
+		<id name="mcmHistoryEntryId" column="mcm_history_id">
+			<generator class="sequence">
+                <param name="sequence">mcm_history_seq</param>
+            </generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Mcm" name="mcm" cascade="none" column="mcm_id" />		
+		<property name="timestamp" column="timestamp" type="java.util.Date" />		
+		<property name="screenshotFileloc" column="screenshot_fileloc"/>		
+		<property name="brightness" column="brightness"/>				
+		<property name="contrast" column="contrast"/>	
+		<property name="volume" column="volume"/>
+		<property name="power" column="power"/>
+		<property name="input" column="input"/>
+		<property name="buttonLock" column="button_lock"/>
+		<property name="mute" column="mute"/>				
+		<property name="ambientNoise" column="ambient_noise"/>	
+		<property name="volumeOffset" column="volume_offset"/>
+		<property name="output" column="output"/>
+		<property name="wooferOffset" column="woofer_offset"/>
+		<property name="responseTime" column="response_time"/>
+		<property name="minGain" column="min_gain"/>
+		<property name="maxGain" column="max_gain"/>
+		<property name="videoInput" column="video_input"/>
+		<property name="audioInput" column="audio_input"/>
+		<property name="videoMute" column="video_mute"/>
+		<property name="audioMute" column="audio_mute"/>
+		<property name="frontPanelLock" column="front_panel_lock"/>
+		<property name="audioSource" column="audio_source"/>
+		<property name="speaker" column="speaker"/>
+		<property name="powerSave" column="power_save"/>
+		<property name="remoteControl" column="remote_control"/>
+		<property name="temperature" column="temperature"/>
+		<property name="serialCode" column="serial_code"/>
+		<property name="isLastMcmHistory" column="is_last_mcm_history"/>				
+	</class>
+</hibernate-mapping>

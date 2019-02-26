@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.RecurrenceStarttime" table="recurrence_starttime">
+		<id name="recurrenceStarttimeId" column="recurrence_starttime_id">
+			<generator class="sequence">
+                <param name="sequence">recurrence_starttime_seq</param>
+            </generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Recurrence" name="recurrence" cascade="none" column="recurrence_id" />
+		<property name="starttime" column="starttime"/>		
+	</class>
+</hibernate-mapping>

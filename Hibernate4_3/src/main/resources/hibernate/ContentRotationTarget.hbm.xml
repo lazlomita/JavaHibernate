@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentRotationTarget" table="content_rotation_target">
+		<id name="contentRotationTargetId" column="content_rotation_target_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.ContentRotationTarget</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.PlaylistContentRotation" name="playlistContentRotation" cascade="none" column="playlist_content_rotation_id" />	
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />
+	</class>
+</hibernate-mapping>

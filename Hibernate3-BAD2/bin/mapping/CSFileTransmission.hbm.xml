@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.CSFileTransmission" table="cs_file_transmission">
+		<id name="csFileTransmissionId" column="cs_file_transmission_id">
+			<generator class="sequence">
+                <param name="sequence">cs_file_transmission_seq</param>
+            </generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.ContentSchedule" name="contentSchedule" cascade="none" column="content_schedule_id" />
+		<many-to-one class="com.kuvata.kmf.FileTransmission" name="fileTransmission" cascade="none" column="file_transmission_id" />
+	</class>
+</hibernate-mapping>

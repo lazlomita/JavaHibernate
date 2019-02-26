@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ServerCommand" table="server_command">
+		<id name="serverCommandId" column="server_command_id">
+			<generator class="sequence">
+                <param name="sequence">server_command_seq</param>
+            </generator>
+		</id>	
+		<property name="deviceServerCommandId" column="device_server_command_id"/>
+		<property name="command" column="command"/>
+		<property name="parameters" column="parameters"/>
+		<property name="status" column="status"/>
+		<property name="subStatus" column="sub_status"/>							
+		<property name="createDt" column="create_dt"/>
+		<property name="lastModifiedDt" column="last_modified_dt"/>	
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />																		
+	</class>
+</hibernate-mapping>

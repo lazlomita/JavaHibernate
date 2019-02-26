@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AssetPresentation" table="asset_presentation">
+		<id name="assetPresentationId" column="asset_presentation_id">
+			<generator class="sequence">
+                <param name="sequence">asset_presentation_seq</param>
+            </generator>
+		</id>		
+		<property name="length" column="length"/>
+		<property name="variableLength" column="variable_length"/>
+		<many-to-one class="com.kuvata.kmf.Displayarea" name="displayarea" cascade="none" column="displayarea_id" />		
+		<many-to-one class="com.kuvata.kmf.Layout" name="layout" cascade="none" column="layout_id" />		
+		<one-to-one name="asset" class="com.kuvata.kmf.Asset" property-ref="assetPresentation"/>
+		<one-to-one name="playlistAsset" class="com.kuvata.kmf.PlaylistAsset" property-ref="assetPresentation"/>
+		<set name="pairedDisplayareas" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="asset_presentation_id" />
+			<one-to-many class="com.kuvata.kmf.PairedDisplayarea"/>
+		</set>		
+	</class>
+</hibernate-mapping>

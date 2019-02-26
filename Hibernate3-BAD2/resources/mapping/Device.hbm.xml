@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Device" table="device" dynamic-update="true">
+		<id name="deviceId" column="device_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Device</param>
+			</generator>
+		</id>		
+		<property name="deviceName" column="device_name"/>
+		<property name="macAddr" column="mac_addr"/>
+		<property name="ipAddr" column="ip_addr"/>		
+		<property name="publicIpAddr" column="public_ip_addr"/>	
+		<property name="networkInterface" column="network_interface"/>				
+		<property name="lastScheduledContent" column="last_scheduled_content"/>
+		<property name="contentSchedulingHorizon" column="content_scheduling_horizon"/>		
+		<property name="additionalContentAmount" column="additional_content_amount"/>
+		<property name="contentOutOfDate" column="content_out_of_date"/>		
+		<property name="contentSchedulerStatus" column="content_scheduler_status"/>
+		<property name="contentSchedulerMessages" column="content_scheduler_messages"/>
+		<property name="volume" column="volume"/>
+		<property name="maxVolume" column="max_volume"/>
+		<property name="applyAlerts" column="apply_alerts" type="java.lang.Boolean" />		
+		<property name="contentUpdateType" column="content_update_type" />
+		<property name="heartbeatInterval" column="heartbeat_interval" />		
+		<property name="diskCapacity" column="disk_capacity" />		
+		<property name="diskUsage" column="disk_usage" />		
+		<property name="rotation" column="rotation" />		
+		<property name="streamingServerCapable" column="streaming_server_capable" type="java.lang.Boolean" />		
+		<property name="streamingClientCapable" column="streaming_client_capable" type="java.lang.Boolean" />
+		<property name="timezone" column="timezone" />														
+		<property name="display" column="display" />														
+		<property name="resolution" column="resolution" />
+		<property name="autoUpdate" column="auto_update" />				
+		<property name="version" column="version" />	
+		<property name="scalingMode" column="scaling_mode" />
+		<property name="lastFileExistsDt" column="last_file_exists_dt" />
+		<property name="maxFileStorage" column="max_file_storage" />	
+		<property name="gateway" column="gateway" />				
+		<property name="netmask" column="netmask" />						
+		<property name="dhcpEnabled" column="dhcp_enabled" />		
+		<property name="dnsServer" column="dns_server" />	
+		<property name="lcdPin" column="lcd_pin"/>	
+		<property name="lcdBranding" column="lcd_branding"/>				
+		<property name="screenshot" column="screenshot"/>		
+		<property name="initPropertiesFromDevice" column="init_properties_from_device"/>
+		<property name="initPropertiesProcessed" column="init_properties_processed"/>
+		<property name="iowaitThreshold" column="iowait_threshold"/>
+		<property name="cpuThreshold" column="cpu_threshold"/>
+		<property name="memoryThreshold" column="memory_threshold"/>
+		<property name="loadThreshold" column="load_threshold"/>						
+		<property name="outputMode" column="output_mode"/>		
+		<property name="screenshotUploadTime" column="screenshot_upload_time"/>																		
+		<property name="vpnIpAddr" column="vpn_ip_addr"/>
+		<property name="deleted" column="deleted" type="java.lang.Boolean" />
+		<property name="filesyncStartTime" column="filesync_start_time"/>
+		<property name="filesyncEndTime" column="filesync_end_time"/>
+		<property name="osVersion" column="os_version"/>	
+		<property name="bytesToDownload" column="bytes_to_download"/>
+		<property name="dispatcherServers" column="dispatcher_servers"/>
+		<property name="edgeServerOpenvpnHostIp" column="edge_server_openvpn_host_ip"/>		
+		<property name="redirectGateway" column="redirect_gateway"/>
+		<property name="xOffset" column="x_offset"/>
+		<property name="yOffset" column="y_offset"/>
+		<property name="zoom" column="zoom"/>
+		<property name="connectAddr" column="connect_addr"/>
+		<property name="antivirusScan" column="antivirus_scan"/>
+		<property name="downloadPriority" column="download_priority"/>
+		<property name="audioNormalization" column="audio_normalization"/>
+		<property name="createDate" column="create_dt"/>
+		<property name="control" column="control"/>
+		<property name="ssid" column="ssid"/>
+		<property name="encryptionType" column="encryption_type"/>
+		<property name="passphrase" column="passphrase"/>
+		<property name="encryptedBillingStatus" column="encrypted_billing_status"/>
+		<property name="readableBillingStatus" column="readable_billing_status"/>
+		<property name="encryptedBillableStartDt" column="encrypted_billable_start_dt"/>
+		<property name="readableBillableStartDt" column="readable_billable_start_dt"/>
+		<property name="encryptedBillableEndDt" column="encrypted_billable_end_dt"/>
+		<property name="readableBillableEndDt" column="readable_billable_end_dt"/>
+		<property name="alphaCompositing" column="alpha_compositing"/>
+		<property name="bandwidthLimit" column="bandwidth_limit"/>
+		<property name="audioConnection" column="audio_connection"/>
+		<property name="activeDispatcher" column="active_dispatcher"/>
+		<property name="deviceSideScheduling" column="device_side_scheduling"/>
+		<property name="framesync" column="framesync"/>
+		<property name="lastModified" column="last_modified"/>
+		<property name="installReleaseHour" column="install_release_hour"/>
+		<property name="type2VideoPlayback" column="type2_video_playback"/>
+		<property name="useChrome" column="use_chrome"/>
+		<property name="chromeDisableGpu" column="chrome_disable_gpu"/>
+		
+		<many-to-one class="com.kuvata.kmf.Device" name="edgeServer" cascade="none" column="edge_server" />
+		<many-to-one class="com.kuvata.kmf.Device" name="mirrorSource" cascade="none" column="mirror_source" />
+		<many-to-one class="com.kuvata.kmf.Device" name="replacedBy" cascade="none" column="replaced_by" />	
+		<many-to-one class="com.kuvata.kmf.billing.VenuePartner" name="venuePartner" cascade="none" column="venue_partner_id" />
+		<many-to-one class="com.kuvata.kmf.MulticastNetwork" name="multicastNetwork" cascade="none" column="multicast_network_id" />	
+		<set name="deviceGrpMembers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="device_id" />
+			<one-to-many class="com.kuvata.kmf.DeviceGrpMember"/>
+		</set>
+		<set name="deviceSchedules" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="device_id" />
+			<one-to-many class="com.kuvata.kmf.DeviceSchedule"/>
+		</set>		
+		<set name="heartbeatEvents" inverse="true" lazy="true">
+			<key column="device_id" />
+			<one-to-many class="com.kuvata.kmf.HeartbeatEvent"/>
+		</set>	
+		<bag name="deviceCommands" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="device_id" />			
+			<one-to-many class="com.kuvata.kmf.DeviceCommand"/>
+		</bag>	
+		<set name="contentRotationTargets" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="device_id" />
+			<one-to-many class="com.kuvata.kmf.ContentRotationTarget"/>
+		</set>		
+		<set name="assetExclusions" inverse="true" lazy="true" cascade="all-delete-orphan" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="device_id" />
+			<one-to-many class="com.kuvata.kmf.AssetExclusion"/>
+		</set>	
+		<set name="alertDevices" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="device_id" />
+			<one-to-many class="com.kuvata.kmf.AlertDevice"/>
+		</set>
+					
+		<filter name="devicesFilter" condition="((device_id IN (SELECT DISTINCT(a.device_id) FROM device a, permission_entry pe WHERE a.device_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.device_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.device_id AND ei.appuser_id = :appUserId ) ) ) ) )
+		AND deleted IS NULL OR deleted != 1)" />
+					
+		<filter name="devicesFilterAdmin" condition="((device_id IN (SELECT DISTINCT(a.device_id) FROM device a, permission_entry pe WHERE a.device_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) ) AND deleted IS NULL OR deleted != 1)" />
+	</class>
+	
+	<filter-def name="devicesFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="devicesFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>		
+	
+</hibernate-mapping>

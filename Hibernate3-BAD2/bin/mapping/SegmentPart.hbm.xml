@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.SegmentPart" table="segment_part">
+		<id name="segmentPartId" column="segment_part_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.SegmentPart</param>
+			</generator>
+		</id>		
+		<discriminator column="segment_part_type" type="string" />		
+		<many-to-one class="com.kuvata.kmf.Segment" name="segment" cascade="none" column="segment_id" />
+		<property name="seqNum" column="seq_num"/>		
+		
+		<subclass name="com.kuvata.kmf.PlaylistSegmentPart" discriminator-value="Playlist">
+			<many-to-one class="com.kuvata.kmf.Playlist" name="playlist" cascade="none" column="playlist_id" />
+		</subclass>
+		<subclass name="com.kuvata.kmf.AssetSegmentPart" discriminator-value="Asset">
+			<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />
+		</subclass>
+	</class>
+</hibernate-mapping>

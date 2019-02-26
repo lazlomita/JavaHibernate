@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.billing.CampaignAsset" table="campaign_asset">
+		<id name="campaignAssetId" column="campaign_asset_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.billing.CampaignAsset</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.billing.Campaign" name="campaign" cascade="none" column="campaign_id" />
+		<many-to-one class="com.kuvata.kmf.Asset" name="asset" cascade="none" column="asset_id" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.AlertDevice" table="alert_device">
+		<id name="alertDeviceId" column="alert_device_id">
+			<generator class="sequence">
+                <param name="sequence">alert_device_seq</param>
+            </generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Alert" name="alert" cascade="none" column="alert_id" />	
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />
+		<many-to-one class="com.kuvata.kmf.Grp" name="deviceGrp" cascade="none" column="device_grp_id" />			
+	</class>
+</hibernate-mapping>

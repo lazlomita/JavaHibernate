@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Schema" table="kmf.schema">
+		<id name="schemaId" column="schema_id">
+			<generator class="increment"/>
+		</id>	
+		<property name="schemaName" column="schema_name"/>			
+		<property name="rsyncUsername" column="rsync_username"/>
+		<property name="rsyncPassword" column="rsync_password"/>	 	
+		<property name="rsyncPort" column="rsync_port"/>
+		<property name="servicePort" column="service_port"/>
+		<property name="sshServer" column="ssh_server"/>
+		<property name="sshPort" column="ssh_port"/>
+		<property name="templateDeviceId" column="template_device_id"/>	
+		<property name="useDeviceProperties" column="use_device_properties"/>
+		<property name="maxRsyncProcesses" column="max_rsync_processes"/>
+		<property name="lastAggregatedId" column="last_aggregated_id"/>
+		<property name="lastAggregatedDate" column="last_aggregated_date"/>
+		<property name="aggregationProgress" column="aggregation_progress"/>
+		<property name="lastServerCleanupDt" column="last_server_cleanup_dt"/>
+		<property name="useSSHTerminal" column="use_ssh_terminal"/>
+	</class>
+</hibernate-mapping>

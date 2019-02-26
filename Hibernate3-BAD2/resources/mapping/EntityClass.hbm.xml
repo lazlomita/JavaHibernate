@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.EntityClass" table="entity_class">
+		<id name="entityClassId" column="entity_class_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.EntityClass</param>
+			</generator>
+		</id>
+		<property name="className" column="class_name"/>
+		<set name="attrDefinitions" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="entity_class_id" />
+			<one-to-many class="com.kuvata.kmf.attr.AttrDefinition"/>
+		</set>	
+		<set name="entityInstances" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="entity_class_id" />
+			<one-to-many class="com.kuvata.kmf.EntityInstance"/>
+		</set>			
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.PlaylistImport" table="playlist_import">
+		<id name="playlistImportId" column="playlist_import_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.PlaylistImport</param>
+			</generator>
+		</id>				
+		<many-to-one class="com.kuvata.kmf.Playlist" name="playlist" cascade="none" column="playlist_id" />		
+		<many-to-one class="com.kuvata.kmf.ContentRotation" name="contentRotation" cascade="none" column="content_rotation_id" />
+		<many-to-one class="com.kuvata.kmf.Layout" name="layout" cascade="none" column="layout_id" />		
+		<many-to-one class="com.kuvata.kmf.Displayarea" name="displayarea" cascade="none" column="displayarea_id" />						
+		<property name="importDate" column="import_date"/>
+		<property name="importType" column="import_type"/>			
+	</class>
+</hibernate-mapping>

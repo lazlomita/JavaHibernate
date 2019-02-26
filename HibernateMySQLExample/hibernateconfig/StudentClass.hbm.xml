@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 11, 2013 4:54:57 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="StudentClass" table="student_class" catalog="tutorials">
+        <composite-id name="id" class="StudentClassId">
+            <key-property name="idStudent" type="int">
+                <column name="ID_STUDENT" />
+            </key-property>
+            <key-property name="classId" type="int">
+                <column name="CLASS_ID" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="class" class="Class" update="false" insert="false" fetch="select">
+            <column name="CLASS_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="student" class="Student" update="false" insert="false" fetch="select">
+            <column name="ID_STUDENT" not-null="true" />
+        </many-to-one>
+        <property name="registered" type="date">
+            <column name="REGISTERED" length="10" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

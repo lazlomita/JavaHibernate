@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Recurrence" table="recurrence">
+		<id name="recurrenceId" column="recurrence_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Recurrence</param>
+			</generator>
+		</id>				
+		<property name="recurrenceType" column="recurrence_type"/>
+		<property name="startDate" column="start_date"/>
+		<property name="endType" column="end_type"/>
+		<property name="endAfterOccurrences" column="end_after_occurrences"/>
+		<property name="endAfterDate" column="end_after_date"/>	
+		<property name="applyContinuation" column="apply_continuation"/>				
+		<many-to-one class="com.kuvata.kmf.Segment" name="segment" cascade="none" column="segment_id" />
+		<many-to-one class="com.kuvata.kmf.reports.SavedReport" name="savedReport" cascade="none" column="saved_report_id" />
+		
+		<set name="recurrenceStarttimes" inverse="true" lazy="true" cascade="all-delete-orphan" collection-type="com.kuvata.kmf.logging.HistorizableSet">
+			<key column="recurrence_id" />			
+			<one-to-many class="com.kuvata.kmf.RecurrenceStarttime"/>
+		</set>	
+		
+		<joined-subclass name="com.kuvata.kmf.WeeklyRecurrence" table="weekly_recurrence">
+			<key column="weekly_recurrence_id"/>	
+			<property name="weeklyFrequency" column="weekly_frequency"/>
+			<property name="mon" column="mon" />
+			<property name="tue" column="tue" />
+			<property name="wed" column="wed" />
+			<property name="thu" column="thu" />
+			<property name="fri" column="fri" />
+			<property name="sat" column="sat" />
+			<property name="sun" column="sun" />
+		</joined-subclass>	
+		<joined-subclass name="com.kuvata.kmf.DailyRecurrence" table="daily_recurrence">
+			<key column="daily_recurrence_id"/>	
+			<property name="dailyFrequency" column="daily_frequency"/>			
+		</joined-subclass>
+		<joined-subclass name="com.kuvata.kmf.MonthlyRecurrence" table="monthly_recurrence">
+			<key column="monthly_recurrence_id"/>	
+			<property name="monthlyFrequency" column="monthly_frequency"/>
+			<property name="dayOfMonth" column="day_of_month" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

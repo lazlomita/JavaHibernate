@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.MulticastNetworkFiles" table="multicast_network_files">
+		<id name="multicastNetworkFilesId" column="multicast_network_files_id">
+			<generator class="sequence">
+                <param name="sequence">multicast_network_files_seq</param>
+            </generator>
+		</id>
+		<property name="fileloc" column="fileloc"/>
+		<property name="filesize" column="filesize"/>
+		<property name="bytesSent" column="bytes_sent"/>
+		<property name="status" column="status"/>
+		<property name="createDt" column="create_dt"/>
+		<property name="receiveSiteIds" column="receive_site_ids"/>
+		<many-to-one class="com.kuvata.kmf.MulticastNetwork" name="multicastNetwork" cascade="none" column="multicast_network_id" />
+	</class>
+</hibernate-mapping>

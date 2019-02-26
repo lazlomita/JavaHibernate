@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.Asset" table="asset" proxy="com.kuvata.kmf.IAsset" dynamic-update="true">
+		<id name="assetId" column="asset_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.Asset</param>				
+			</generator>
+		</id>
+		<discriminator column="asset_type" type="string" />
+		
+		<property name="assetName" column="asset_name"/>
+		<property name="startDate" column="start_date"/>
+		<property name="endDate" column="end_date"/>
+		<property name="adserverIdentifier" column="adserver_identifier"/>
+		<property name="lastModified" column="last_modified"/>
+		<many-to-one class="com.kuvata.kmf.Asset" name="defaultAsset" cascade="none" column="default_asset" />
+		<many-to-one class="com.kuvata.kmf.AssetPresentation" name="assetPresentation" cascade="none" column="asset_presentation_id" />
+		<!-- JSR 3/2/05 changed to lazy="true" to improve performance on playlist properties screen -->
+		<set name="pairedAssets" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="asset_id" />
+			<one-to-many class="com.kuvata.kmf.PairedAsset"/>
+		</set>	
+		<set name="assetSegmentParts" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="asset_id" />
+			<one-to-many class="com.kuvata.kmf.AssetSegmentPart"/>
+		</set>	
+		<set name="contentRotationAssets" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="asset_id" />
+			<one-to-many class="com.kuvata.kmf.ContentRotationAsset"/>
+		</set>			
+		<set name="playlistAssets" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="asset_id" />
+			<one-to-many class="com.kuvata.kmf.PlaylistAsset"/>
+		</set>			
+		<set name="assetExclusions" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="asset_id" />
+			<one-to-many class="com.kuvata.kmf.AssetExclusion"/>
+		</set>
+		
+		<subclass name="com.kuvata.kmf.asset.Image" discriminator-value="Image" proxy="com.kuvata.kmf.asset.IImage">
+			<property name="width" column="width"/>
+			<property name="height" column="height"/>					
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>	
+			<property name="fitToSize" column="fit_to_size"/>	
+			<property name="filesize" column="filesize"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+			<property name="originalFilename" column="original_filename"/>
+		</subclass>						
+		<subclass name="com.kuvata.kmf.asset.Video" discriminator-value="Video" proxy="com.kuvata.kmf.asset.IVideo">
+			<property name="displayEmbeddedSubtitles" column="display_embedded_subtitles"/>
+			<property name="width" column="width"/>
+			<property name="height" column="height"/>	
+			<property name="length" column="length"/>			
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>	
+			<property name="filesize" column="filesize"/>
+			<property name="suppressAudio" column="suppress_audio"/>
+			<property name="anamorphicWidescreen" column="anamorphic_widescreen"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+			<property name="originalFilename" column="original_filename"/>
+			<property name="videoCodec" column="video_codec"/>
+			<property name="normalizationBeginAvg" column="normalization_begin_avg"/>
+			<property name="framesync" column="framesync"/>
+		</subclass>		
+		<subclass name="com.kuvata.kmf.asset.Audio" discriminator-value="Audio" proxy="com.kuvata.kmf.asset.IAudio">
+			<property name="length" column="length"/>
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>	
+			<property name="filesize" column="filesize"/>
+			<property name="originalFilename" column="original_filename"/>
+			<property name="normalizationBeginAvg" column="normalization_begin_avg"/>
+		</subclass>
+		<subclass name="com.kuvata.kmf.asset.Flash" discriminator-value="Flash" proxy="com.kuvata.kmf.asset.IFlash">
+			<property name="width" column="width"/>
+			<property name="height" column="height"/>		
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>	
+			<property name="filesize" column="filesize"/>				
+			<property name="fitToSize" column="fit_to_size"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+			<property name="originalFilename" column="original_filename"/>
+			<property name="setTransparentBg" column="set_transparent_bg"/>
+		</subclass>
+		<subclass name="com.kuvata.kmf.asset.Webapp" discriminator-value="Webapp" proxy="com.kuvata.kmf.asset.IWebapp">
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>
+			<property name="startPage" column="start_page"/>	
+			<property name="filesize" column="filesize"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+			<property name="originalFilename" column="original_filename"/>
+			<property name="setTransparentBg" column="set_transparent_bg"/>
+		</subclass>
+		<subclass name="com.kuvata.kmf.asset.Html" discriminator-value="Html" proxy="com.kuvata.kmf.asset.IHtml">
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>
+			<property name="filesize" column="filesize"/>			
+			<property name="startPage" column="start_page"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+			<property name="originalFilename" column="original_filename"/>
+			<property name="setTransparentBg" column="set_transparent_bg"/>
+			<property name="html5Hwaccel" column="html5_hwaccel"/>
+		</subclass>
+		<subclass name="com.kuvata.kmf.asset.Ticker" discriminator-value="Ticker" proxy="com.kuvata.kmf.asset.ITicker">
+			<property name="tickerColor" column="ticker_color"/>
+			<property name="tickerStyle" column="ticker_style"/>
+			<property name="tickerFont" column="ticker_font"/>
+			<property name="tickerText" column="ticker_text"/>
+			<property name="tickerFontSize" column="ticker_font_size"/>
+			<property name="tickerBackgroundColor" column="ticker_bg_color"/>						
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>	
+			<property name="rssUrl" column="rss_url"/>	
+			<property name="rssPollFrequency" column="rss_poll_frequency"/>	
+			<property name="rssReadTitle" column="rss_read_title"/>	
+			<property name="rssReadDescription" column="rss_read_description"/>		
+			<property name="tickerType" column="ticker_type"/>
+			<property name="tickerPresentationStyle" column="ticker_presentation_style"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+		</subclass>		
+		<subclass name="com.kuvata.kmf.asset.Xml" discriminator-value="Xml" proxy="com.kuvata.kmf.asset.IXml">
+			<property name="fileloc" column="fileloc"/>			
+			<property name="adler32" column="adler32"/>	
+			<property name="filesize" column="filesize"/>			
+		</subclass>
+		<subclass name="com.kuvata.kmf.asset.Url" discriminator-value="Url" proxy="com.kuvata.kmf.asset.IUrl">
+			<property name="url" column="url"/>
+			<property name="overlayOpacity" column="overlay_opacity"/>
+			<property name="setTransparentBg" column="set_transparent_bg"/>
+			<property name="html5Hwaccel" column="html5_hwaccel"/>
+		</subclass>	
+		<subclass name="com.kuvata.kmf.asset.TargetedAsset" discriminator-value="TargetedAsset" proxy="com.kuvata.kmf.asset.ITargetedAsset">
+			<property name="defaultAssetAffinityType" column="default_asset_affinity_type"/>
+			<property name="multipleTargetsBehavior" column="multiple_targets_behavior"/>
+			<property name="useMemberPairing" column="use_member_pairing"/>
+			<set name="targetedAssetMembers" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="seq_num" collection-type="com.kuvata.kmf.logging.HistorizableLinkedSet">
+				<key column="targeted_asset_id" />
+				<one-to-many class="com.kuvata.kmf.TargetedAssetMember"/>				
+			</set>				
+		</subclass>	
+		<subclass name="com.kuvata.kmf.asset.AuxInput" discriminator-value="AuxInput" proxy="com.kuvata.kmf.asset.IAuxInput">			
+		</subclass>			
+		<subclass name="com.kuvata.kmf.asset.PowerOff" discriminator-value="PowerOff" proxy="com.kuvata.kmf.asset.IPowerOff">
+		</subclass>
+		<subclass name="com.kuvata.kmf.asset.DeviceVolume" discriminator-value="DeviceVolume" proxy="com.kuvata.kmf.asset.IDeviceVolume">
+			<property name="volume" column="volume"/>
+		</subclass>	
+		<subclass name="com.kuvata.kmf.asset.StreamingClient" discriminator-value="StreamingClient" proxy="com.kuvata.kmf.asset.IStreamingClient">	
+			<property name="liveVideoType" column="live_video_type"/>
+			<property name="streamingUrl" column="streaming_url"/>
+			<property name="liveVideoInput" column="live_video_input"/>
+			<property name="liveVideoChannel" column="live_video_channel"/>
+			<property name="liveVideoChannelType" column="live_video_channel_type"/>	
+			<property name="suppressAudio" column="suppress_audio"/>
+		</subclass>							
+		<subclass name="com.kuvata.kmf.asset.StreamingServer" discriminator-value="StreamingServer" proxy="com.kuvata.kmf.asset.IStreamingServer">	
+			<property name="streamingUrl" column="streaming_url"/>		
+		</subclass>	
+		<subclass name="com.kuvata.kmf.asset.AdServer" discriminator-value="AdServer" proxy="com.kuvata.kmf.asset.IAdServer">
+			<property name="url" column="url"/>
+			<many-to-one class="com.kuvata.kmf.ContentRotation" name="defaultContentRotation" cascade="none" column="content_rotation_id" />
+		</subclass>
+		
+		<filter name="assetsFilter" condition="(asset_id IN (SELECT DISTINCT(pe.permission_entity_id) FROM permission_entry pe WHERE 
+                pe.role_id IN (:roleIds) ) OR asset_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.appuser_id = :appUserId ) )" />
+                
+        <filter name="assetsFilterAdmin" condition="(asset_id IN (SELECT DISTINCT(pe.permission_entity_id) FROM permission_entry pe WHERE
+        pe.role_id IN (:roleIds) ) )" />
+        
+	</class>
+	
+	<filter-def name="assetsFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	 	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>	
+	<filter-def name="assetsFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />  	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>			
+</hibernate-mapping>

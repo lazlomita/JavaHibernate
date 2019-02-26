@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.ContentRotationImport" table="content_rotation_import">
+		<id name="contentRotationImportId" column="content_rotation_import_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.PlaylistImport</param>
+			</generator>
+		</id>				
+		<many-to-one class="com.kuvata.kmf.ContentRotation" name="contentRotation" cascade="none" column="content_rotation_id" />		
+		<many-to-one class="com.kuvata.kmf.ContentRotation" name="contentRotationToImport" cascade="none" column="import_content_rotation_id" />
+		<property name="importDate" column="import_date"/>
+		<property name="importType" column="import_type"/>			
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.FileTransmission" table="file_transmission">
+		<id name="fileTransmissionId" column="file_transmission_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.FileTransmission</param>
+			</generator>
+		</id>		
+		<property name="filename" column="filename"/>
+		<property name="status" column="status"/>		
+		<property name="dt" column="dt"/>
+		<property name="type" column="type"/>
+		<property name="filesize" column="filesize"/>
+		<property name="transferDt" column="transfer_dt"/>
+																					
+		<many-to-one class="com.kuvata.kmf.Device" name="device" cascade="none" column="device_id" />				
+					
+	</class>
+</hibernate-mapping>

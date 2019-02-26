@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.reports.SavedReportFiles" table="saved_report_files">
+		<id name="savedReportFilesId" column="saved_report_files_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.reports.SavedReportFiles</param>
+			</generator>
+		</id>		
+		<property name="fileloc" column="fileloc"/>
+		<property name="startDate" column="start_date"/>
+		<property name="endDate" column="end_date"/>
+		<property name="createDt" column="create_dt"/>
+		
+		<many-to-one class="com.kuvata.kmf.reports.SavedReport" name="savedReport" cascade="none" column="saved_report_id" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.SelectedEntities" table="selected_entities">
+		<id name="selectedEntitiesId" type="long" column="selected_entities_id">
+	        <generator class="sequence">
+                <param name="sequence">selected_entities_seq</param>
+            </generator> 
+		</id>
+		<property name="selectionId" column="selection_id"/>
+		<property name="entityId" column="entity_id"/>
+	</class>
+</hibernate-mapping>

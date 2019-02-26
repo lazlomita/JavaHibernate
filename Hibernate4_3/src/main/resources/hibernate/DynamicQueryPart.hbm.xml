@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.DynamicQueryPart" table="dynamic_query_part">
+		<id name="dynamicQueryPartId" column="dynamic_query_part_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.DynamicQueryPart</param>
+			</generator>
+		</id>
+		<many-to-one class="com.kuvata.kmf.Playlist" name="playlist" cascade="none" column="playlist_id" />
+		<many-to-one class="com.kuvata.kmf.ContentRotation" name="contentRotation" cascade="none" column="content_rotation_id" />
+		<many-to-one class="com.kuvata.kmf.attr.AttrDefinition" name="attrDefinition" cascade="none" column="attr_definition_id" />
+		<property name="operator" column="operator"/>
+		<property name="value" column="value"/>
+		<property name="selectedDate" column="selected_date"/>
+		<property name="numDaysAgo" column="num_days_ago"/>
+		<property name="includeNull" column="include_null"/>
+		<property name="seqNum" column="seq_num"/>
+	</class>
+</hibernate-mapping>

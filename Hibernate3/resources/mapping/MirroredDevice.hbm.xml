@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+	SYSTEM "file:///kuvata/conf/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.kuvata.kmf.MirroredDevice" table="mirrored_device">
+		<id name="mirroredDeviceId" column="mirrored_device_id">
+			<generator class="com.kuvata.kmf.IdentifierGenerator">
+				<param name="className">com.kuvata.kmf.MirroredDevice</param>
+			</generator>
+		</id>		
+		<many-to-one class="com.kuvata.kmf.Device" name="mirrorPlayer" cascade="none" column="mirror_player_id" />
+		<many-to-one class="com.kuvata.kmf.Device" name="mirrorSource" cascade="none" column="mirror_source_id" />
+					
+		<filter name="mirrorPlayersFilter" condition="(mirror_player_id IN (SELECT DISTINCT(a.mirror_player_id) FROM mirrored_device a, permission_entry pe WHERE a.mirror_player_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR ( NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles AND a.mirror_player_id IN ( SELECT ei.entity_id FROM entity_instance ei WHERE ei.entity_id = a.mirror_player_id AND ei.appuser_id = :appUserId ) ) ) ) )" />
+					
+		<filter name="mirrorPlayersFilterAdmin" condition="(mirror_player_id IN (SELECT DISTINCT(a.mirror_player_id) FROM mirrored_device a, permission_entry pe WHERE a.mirror_player_id = pe.permission_entity_id(+)
+		AND ( pe.role_id IN (:roleIds) OR NVL(pe.role_id, 0) = :excludeEntitiesWithNoRoles ) ) )" />
+	</class>
+	
+	<filter-def name="mirrorPlayersFilter">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="appUserId" type="string" />	    	
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+	<filter-def name="mirrorPlayersFilterAdmin">
+	    	<filter-param name="roleIds" type="long" />
+	    	<filter-param name="excludeEntitiesWithNoRoles" type="long" />
+	</filter-def>
+</hibernate-mapping>
